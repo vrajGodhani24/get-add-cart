@@ -1,13 +1,15 @@
+import 'package:get/get.dart';
+
 class Product {
   int id;
-  String name;
+  String productName;
   int price;
-  int quantity;
+  int cartQuantity;
 
   Product({
     required this.id,
-    required this.name,
+    required this.productName,
     required this.price,
-    required this.quantity,
+    required this.cartQuantity,
   });
 }

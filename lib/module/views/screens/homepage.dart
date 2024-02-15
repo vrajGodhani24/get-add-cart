@@ -11,60 +11,62 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Counter"),
+        title: const Text("Home Page"),
         centerTitle: true,
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Badge(
-              label: GetBuilder<ProductController>(
-                builder: (controller) {
-                  return Text("${productController.cartProducts.length}");
-                },
-              ),
-              child: IconButton(
-                onPressed: () {
-                  Get.toNamed('page2');
-                },
-                icon: const Icon(Icons.shopping_cart_rounded),
-              ),
+          IconButton(
+            onPressed: () {
+              Get.changeTheme(
+                  (Get.isDarkMode) ? ThemeData.light() : ThemeData.dark());
+            },
+            icon: const Icon(Icons.dark_mode),
+          ),
+          Badge(
+            label: GetBuilder<ProductController>(
+              builder: (controller) {
+                return Text("${productController.totalCartQuantity}");
+              },
+            ),
+            alignment: const Alignment(0.5, -0.5),
+            child: IconButton(
+              onPressed: () {
+                Get.toNamed('page2');
+              },
+              icon: const Icon(Icons.shopping_cart),
             ),
           ),
         ],
       ),
       body: Container(
-        padding: const EdgeInsets.all(8),
         alignment: Alignment.center,
         child: GetBuilder<ProductController>(
-          builder: (controller) {
-            return ListView(
-              children: productController.allProducts
-                  .map(
-                    (e) => Card(
-                      elevation: 5,
-                      child: ListTile(
-                        leading: const FlutterLogo(size: 45),
-                        title: Text(e.name),
-                        subtitle: Text("${e.price}"),
-                        trailing: GetBuilder<ProductController>(
-                          builder: (controller) {
-                            return (e.quantity == 0)
-                                ? InkWell(
-                                    onTap: () {
-                                      productController.addToCartProduct(e);
-                                    },
-                                    child: const Icon(
-                                        Icons.add_shopping_cart_outlined),
-                                  )
-                                : const Icon(Icons.done, color: Colors.green);
-                          },
-                        ),
-                      ),
+          builder: (controller) => ListView(
+            children: productController.allProducts
+                .map(
+                  (e) => Card(
+                    elevation: 2,
+                    margin: const EdgeInsets.all(3),
+                    child: ListTile(
+                      leading: const FlutterLogo(size: 50),
+                      title: Text(e.productName),
+                      subtitle: Text("${e.price}"),
+                      trailing: (e.cartQuantity > 0)
+                          ? const Icon(
+                              Icons.done,
+                              color: Colors.green,
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                productController.addToCartProduct(e);
+                              },
+                              child:
+                                  const Icon(Icons.add_shopping_cart_outlined),
+                            ),
                     ),
-                  )
-                  .toList(),
-            );
-          },
+                  ),
+                )
+                .toList(),
+          ),
         ),
       ),
     );

@@ -1,36 +1,68 @@
-import 'package:adv_4_animation/module/model/product.dart';
 import 'package:get/get.dart';
 
+import '../model/product.dart';
+
 class ProductController extends GetxController {
-  List<Product> allProducts = [
-    Product(id: 1, name: "TV", price: 25000, quantity: 0),
-    Product(id: 2, name: "AC", price: 38000, quantity: 0),
-    Product(id: 3, name: "Laptop", price: 60000, quantity: 0),
-    Product(id: 4, name: "Watch", price: 5000, quantity: 0),
-    Product(id: 5, name: "Airbuds", price: 22000, quantity: 0),
-    Product(id: 6, name: "Phone", price: 80000, quantity: 0),
+  List<Product> cartProducts = <Product>[];
+
+  int totalCartQuantity = 0;
+  int totalCartPrice = 0;
+
+  List<Product> allProducts = <Product>[
+    Product(id: 1, productName: 'AC', price: 30000, cartQuantity: 0),
+    Product(id: 2, productName: 'Fridge', price: 55000, cartQuantity: 0),
+    Product(id: 3, productName: 'TV', price: 50000, cartQuantity: 0),
+    Product(id: 4, productName: 'Laptop', price: 100000, cartQuantity: 0),
+    Product(id: 5, productName: 'Phone', price: 80000, cartQuantity: 0),
+    Product(id: 6, productName: 'Camera', price: 5000, cartQuantity: 0),
+    Product(id: 7, productName: 'Watch', price: 1000, cartQuantity: 0),
+    Product(id: 8, productName: 'Projector', price: 15000, cartQuantity: 0),
+    Product(id: 9, productName: 'Speaker', price: 10000, cartQuantity: 0),
+    Product(id: 10, productName: 'Computer', price: 60000, cartQuantity: 0),
   ];
 
-  List<Product> cartProducts = [];
-
   void addToCartProduct(Product product) {
+    product.cartQuantity++;
     cartProducts.add(product);
-    product.quantity++;
+    totalQuantity();
+    totalPrice();
     update();
   }
 
   void incrementQuantity(Product product) {
-    product.quantity++;
+    product.cartQuantity++;
+    totalQuantity();
+    totalPrice();
     update();
   }
 
   void decrementQuantity(Product product) {
-    if (product.quantity > 1) {
-      product.quantity--;
+    if (product.cartQuantity > 1) {
+      product.cartQuantity--;
     } else {
-      product.quantity = 0;
+      product.cartQuantity--;
       cartProducts.remove(product);
     }
+    totalQuantity();
+    totalPrice();
+    update();
+  }
+
+  void totalQuantity() {
+    totalCartQuantity = 0;
+    for (var element in cartProducts) {
+      totalCartQuantity += element.cartQuantity;
+    }
+    print(totalCartQuantity);
+    update();
+  }
+
+  void totalPrice() {
+    totalCartPrice = 0;
+    for (var element in cartProducts) {
+      totalCartPrice += element.cartQuantity * element.price;
+    }
+    print(totalCartPrice);
     update();
   }
 }
